@@ -1,0 +1,13 @@
+main: fr.birdo.firemeloncore.FireMelonCore
+
+name: FireMelonCore
+
+description: Plugin pour le SMP FireMelon.
+
+author: Birdo
+
+version: 1.0
+
+commands:
+  hvr:
+    description: Plugin commands
