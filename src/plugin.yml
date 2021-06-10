@@ -8,6 +8,10 @@ author: Birdo
 
 version: 1.0
 
+api-version: 1.16
+
 commands:
-  hvr:
+  fm:
     description: Plugin commands
+  recipes:
+    description: List of plugin recipes
