@@ -1,7 +1,10 @@
 package fr.birdo.firemeloncore.events;
 
 import fr.birdo.firemeloncore.FireMelonCore;
+import fr.birdo.firemeloncore.gui.OsuGui;
 import fr.birdo.firemeloncore.gui.RecipesGui;
+import fr.birdo.firemeloncore.item.Bedrock_Hammer;
+import fr.birdo.firemeloncore.item.NetheriteStick;
 import fr.birdo.firemeloncore.item.NightVision_Upgrade;
 import fr.birdo.firemeloncore.utils.Random;
 import org.bukkit.ChatColor;
@@ -26,8 +29,6 @@ public class Commands implements Listener {
 
     public static List<String> FMC_COMMANDS = new ArrayList<>();
 
-    ItemStack nv_upgrade = NightVision_Upgrade.getItem();
-
     @EventHandler
     public void OnCommandSend(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
@@ -38,11 +39,20 @@ public class Commands implements Listener {
             if (player.isOp()) {
                 if (args[1].equalsIgnoreCase("give")) {
                     if (args[2].equalsIgnoreCase("nv_upgrade")) {
-                        player.getInventory().addItem(nv_upgrade);
+                        player.getInventory().addItem(NightVision_Upgrade.getItem());
                         player.sendMessage(ChatColor.DARK_GREEN + "Vous avez bien reçu 1 FMSMP:NV_UPGRADE");
-                    } else {
+                    }else if(args[2].equalsIgnoreCase("bedrock_hammer")){
+                        player.getInventory().addItem(Bedrock_Hammer.getItem());
+                        player.sendMessage(ChatColor.DARK_GREEN + "Vous avez bien reçu 1 FMSMP:BEDROCK_HAMMER");
+                    }else if(args[2].equalsIgnoreCase("netherite_stick")){
+                        player.getInventory().addItem(NetheriteStick.getItem());
+                        player.sendMessage(ChatColor.DARK_GREEN + "Vous avez bien reçu 1 FMSMP:BEDROCK_HAMMER");
+                    }else{
                         player.sendMessage(ChatColor.DARK_RED + "Item inconnu !");
                     }
+                }
+                if (args[1].equalsIgnoreCase("osu")) {
+                    OsuGui.openGui(player);
                 }
             } else {
                 player.sendMessage(ChatColor.RED + "Vous n'avez pas la permission de faire ça !");

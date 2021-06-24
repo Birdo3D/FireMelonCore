@@ -28,11 +28,12 @@ public class NightVision_Upgrade implements Listener {
 
     public static String itemName = "Night Vision Upgrade";
     public static String itemLore = "Apply this on helmet in anvil.";
+    public static Material itemMat = Material.STRUCTURE_VOID;
     private static int count;
 
     public static ItemStack getItem() {
 
-        ItemStack item = new ItemStack(Material.STRUCTURE_VOID, 1);
+        ItemStack item = new ItemStack(itemMat, 1);
         ItemMeta itemM = item.getItemMeta();
         itemM.setDisplayName(ChatColor.AQUA + itemName);
         itemM.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -46,7 +47,7 @@ public class NightVision_Upgrade implements Listener {
     @EventHandler
     public static void onInteract(PlayerInteractEvent e) {
         if (e.getPlayer().getInventory().getItem(EquipmentSlot.HAND) != null) {
-            if (e.getPlayer().getInventory().getItem(EquipmentSlot.HAND).getType() == Material.STRUCTURE_VOID) {
+            if (e.getPlayer().getInventory().getItem(EquipmentSlot.HAND).getType() == itemMat) {
                 e.setCancelled(true);
             }
         }
@@ -74,12 +75,12 @@ public class NightVision_Upgrade implements Listener {
     }
 
     @EventHandler
-    public void noRename2(InventoryClickEvent e) {
+    public void noRename(InventoryClickEvent e) {
         Inventory clickedInventory = e.getClickedInventory();
         if (clickedInventory instanceof AnvilInventory) {
             AnvilInventory anvilInventory = (AnvilInventory) clickedInventory;
             if (anvilInventory.getContents()[0] != null) {
-                if (anvilInventory.getContents()[0].getType().equals(Material.STRUCTURE_VOID)) {
+                if (anvilInventory.getContents()[0].getType().equals(itemMat)) {
                     if (anvilInventory.getContents()[0].hasItemMeta() && anvilInventory.getContents()[0].getItemMeta().hasDisplayName() && anvilInventory.getContents()[0].getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.AQUA + itemName)) {
                         if (e.getSlot() == 2) {
                             e.setCancelled(true);

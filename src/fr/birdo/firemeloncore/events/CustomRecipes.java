@@ -1,6 +1,8 @@
 package fr.birdo.firemeloncore.events;
 
 import fr.birdo.firemeloncore.FireMelonCore;
+import fr.birdo.firemeloncore.item.Bedrock_Hammer;
+import fr.birdo.firemeloncore.item.NetheriteStick;
 import fr.birdo.firemeloncore.item.NightVision_Upgrade;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,16 +23,15 @@ public class CustomRecipes implements Listener {
     public CustomRecipes(FireMelonCore fireMelonCore) {
     }
 
-    ItemStack nv_upgrade_item = NightVision_Upgrade.getItem();
-    String nv_upgrade_name = NightVision_Upgrade.itemName;
-
     public void customRecipe() {
+        //Quartz Block
         ItemStack quartz = new ItemStack(Material.QUARTZ_BLOCK, 4);
         ShapedRecipe quartzR = new ShapedRecipe(quartz);
         quartzR.shape("##", "##");
         quartzR.setIngredient('#', Material.QUARTZ);
 
-        ItemStack nv_upgrade = nv_upgrade_item;
+        //NV_Upgrade
+        ItemStack nv_upgrade = NightVision_Upgrade.getItem();
         ShapedRecipe nv_upgradeR = new ShapedRecipe(nv_upgrade);
         nv_upgradeR.shape("###", "#?#", "!/!");
         nv_upgradeR.setIngredient('#', Material.GREEN_STAINED_GLASS);
@@ -38,8 +39,36 @@ public class CustomRecipes implements Listener {
         nv_upgradeR.setIngredient('!', Material.DIAMOND);
         nv_upgradeR.setIngredient('/', Material.REDSTONE);
 
+        //Netherite Stick
+        ItemStack netherite_stick = NetheriteStick.getItemCraft();
+        ShapedRecipe netherite_stickR = new ShapedRecipe(netherite_stick);
+        netherite_stickR.shape("#", "#");
+        netherite_stickR.setIngredient('#', Material.NETHERITE_INGOT);
+
+        //Bedrock Hammer
+        ItemStack bedrock_hammer = Bedrock_Hammer.getItem();
+        ShapedRecipe bedrock_hammerR = new ShapedRecipe(bedrock_hammer);
+        bedrock_hammerR.shape("#??", " !?", " ! ");
+        bedrock_hammerR.setIngredient('#', Material.DIAMOND);
+        bedrock_hammerR.setIngredient('?', Material.OBSIDIAN);
+        bedrock_hammerR.setIngredient('!', new RecipeChoice.ExactChoice(NetheriteStick.getItem()));
+
         plugin.getServer().addRecipe(quartzR);
         plugin.getServer().addRecipe(nv_upgradeR);
+        plugin.getServer().addRecipe(netherite_stickR);
+        plugin.getServer().addRecipe(bedrock_hammerR);
+    }
+
+    public void unshaped() {
+        //Remove Diamond Hoe Assemblage
+        if(Bedrock_Hammer.itemMat.equals(Material.DIAMOND_HOE)) {
+            ItemStack nullItem = new ItemStack(Material.DIRT, 0);
+            ItemMeta itemM = nullItem.getItemMeta();
+            nullItem.setItemMeta(itemM);
+            ShapelessRecipe nullItemRecipe = new ShapelessRecipe(nullItem);
+            nullItemRecipe.addIngredient(2, Bedrock_Hammer.itemMat);
+            plugin.getServer().addRecipe(nullItemRecipe);
+        }
     }
 
     @EventHandler
@@ -54,12 +83,12 @@ public class CustomRecipes implements Listener {
 
             if (firstSlotMat.equals(Material.LEATHER_HELMET) || firstSlotMat.equals(Material.CHAINMAIL_HELMET) || firstSlotMat.equals(Material.IRON_HELMET) || firstSlotMat.equals(Material.GOLDEN_HELMET) || firstSlotMat.equals(Material.DIAMOND_HELMET) || firstSlotMat.equals(Material.NETHERITE_HELMET)) {
                 if (secondSlot.getType().equals(Material.STRUCTURE_VOID)) {
-                    if (secondSlot.hasItemMeta() && secondSlot.getItemMeta().hasDisplayName() && secondSlot.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.AQUA + nv_upgrade_name)) {
+                    if (secondSlot.hasItemMeta() && secondSlot.getItemMeta().hasDisplayName() && secondSlot.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.AQUA + NightVision_Upgrade.itemName)) {
                         if (firstSlot.hasItemMeta() && firstSlot.getItemMeta().hasLore() && firstSlot.getItemMeta().getLore().toString().contains(ChatColor.GRAY + "Night Vision I")) {
-                        }else{
+                        } else {
                             ItemStack result = firstSlot.clone();
                             ItemMeta resultM = result.getItemMeta();
-                            resultM.setLore(Arrays.asList("", ChatColor.DARK_GREEN+"Upgrades :", ChatColor.GRAY + "Night Vision I"));
+                            resultM.setLore(Arrays.asList("", ChatColor.DARK_GREEN + "Upgrades :", ChatColor.GRAY + "Night Vision I"));
                             result.setItemMeta(resultM);
                             e.setResult(result);
                         }
